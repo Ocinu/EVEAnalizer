@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+
+{% block body %}
+    <div class="row m-2" style="color: white"><h4>{{ object.name }}</h4></div>
+    <div class="row" style="color: white">
+        <div class="col-9">
+            <ul class="list-inline">
+                {% for article in object.articles.all %}
+                    <li >
+                        <a href="{% url 'article' article.pk %}" style="color: white; text-decoration: none">{{ article.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-3">
+            <p>{{ object.name }}</p>
+            <p>{{ object.eve_id }}</p>
+            <p>{{ object.category.name }}</p>
+        </div>
+    </div>
+{% endblock %}

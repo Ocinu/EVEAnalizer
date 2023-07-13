@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+
+{% block body %}
+    <div class="row m-2" style="color: white"><h4>{{ object.name }}</h4></div>
+    <div class="row">
+        <div class="col-6" style="color: white">
+            <p>{{ object.eve_id }}</p>
+            <p>{{ object.constellation.name }}</p>
+            <p>{{ object.constellation.region.name }}</p>
+            <p>{{ object.security_status }}</p>
+        </div>
+    </div>
+{% endblock %}

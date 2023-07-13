@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% if request.user.is_authenticated and request.user.pk == object.owner.pk %}
+    {% block body %}
+        {% include 'Pilot/pilot_inc/_pilot_info.html' %}
+
+        {% include 'Pilot/pilot_inc/_accordeon.html' %}
+    {% endblock %}
+{% endif %}

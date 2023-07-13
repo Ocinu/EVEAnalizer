@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    {% for news in news_list %}
+        <div class="card mt-3 opacity-75">
+            <div class="card-body">
+                <h5 class="card-title">{{ news.title}}</h5>
+                <p class="card-text text-truncate">{{ news.description|safe }}</p>
+                <a href="{{ news.link }}" class="card-link">Link</a>
+                <div class="card-footer text-muted">{{ news.published }}</div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        <nav aria-label="...">
+            <ul class="pagination mt-5 opacity-75">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

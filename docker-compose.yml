@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - api
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./static:/app/static
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 5d & wait $${!}; done;'"
+
+  api:
+    image: "eve-analyzer"
+    container_name: "api"
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/opt/app"
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server
+    ports:
+      - 6379:6379
+
+  celery:
+    image: "eve-analyzer"
+    restart: on-failure
+    entrypoint: "/bin/sh -c 'celery -A core.celery worker -l info -c 1'"
+    depends_on:
+      - api
+      - redis
+    volumes:
+      - ".:/opt/app"
+    env_file:
+      - .env
+
+  celery-beat:
+    image: "eve-analyzer"
+    restart: on-failure
+    entrypoint: "/bin/sh -c 'celery -A core.celery beat 
+    -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler'"
+    depends_on:
+      - api
+      - redis
+    volumes:
+      - ".:/opt/app"
+    env_file:
+      - .env
+
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:

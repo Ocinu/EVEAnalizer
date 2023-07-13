@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Overview{% endblock %}
+
+{% block body %}
+    {% if request.user.is_authenticated %}
+        <div class="row mt-3">
+            <div class="col-10">
+                <h4 class="balance_info">Total balance: <span class="balance">{{ total_balance }}</span></h4>
+            </div>
+            <div class="col-2">
+                <a href="{{ eve_login_url }}" class='btn' style="background-color: azure">Add New</a>
+            </div>
+        </div>
+
+        <div class="row p-3 mb-5">
+            {% for character in character_list %}
+                <div class="col m-3">
+                    <a href="{% url 'character' character.pk %}" style="text-decoration: none; color: white">
+                        <img src="{{ character.portrait }}" alt="">
+                        <h5>{{ character.name }}</h5>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

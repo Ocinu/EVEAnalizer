@@ -1,0 +1,8 @@
+<tr>
+    <td><img src="{{ order.article.icon_url }}" alt=""></td>
+    <td><a href="{% url 'article' order.article.pk %}">{{ order.article.name }}</a></td>
+    <td><span class="balance">{{ order.price }}</span></td>
+    <td>{{ order.volume_remain }} \ {{ order.volume_total }}</td>
+    <td>{{ order.issued }}</td>
+    <td><a href="{% url 'region' order.region.pk %}">{{ order.region.name }}</a></td>
+</tr>

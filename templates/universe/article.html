@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+
+{% block body %}
+    <h4 style="color: white">{{ object.name }}</h4>
+    <div class="row" style="color: white">
+        <div class="col">
+            {% if object.render_url %}
+                <img src="{{ object.render_url }}" alt="">
+            {% else %}
+                <img src="{{ object.icon_url }}" alt="">
+            {% endif %}
+        </div>
+
+        <div class="col">
+            <p>{{ object.name }}</p>
+            <p>{{ object.group.name }}</p>
+            <p>{{ object.eve_id }}</p>
+            <p>{{ object.adjusted_price }}</p>
+            <p>{{ object.average_price }}</p>
+            <p>{{ object.description | safe }}</p>
+        </div>
+    </div>
+
+{% endblock %}

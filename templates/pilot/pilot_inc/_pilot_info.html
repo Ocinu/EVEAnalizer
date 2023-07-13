@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col">
+        <img src="{{ object.portrait }}" alt="">
+    </div>
+    <div class="col"  style="color: white">
+        <h4>{{ object.name }}</h4>
+        <p>{{ object.birthday }}</p>
+        <div class="row">
+            <div class="col">
+                <img src="{{ object.corporation.icon }}" width="64" height="64" alt="">
+                <p>{{ object.corporation.name }}</p>
+                <p>
+                    <i>{{ object.location.constellation.region.name }}</i> {{ object.location.name }} {{ object.location.security_status }}
+                </p>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <p><span class="balance">{{ object.wallet_balance }} </span>ISK</p>
+        <p><span class="balance">{{ object.total_sp }} </span>SP</p>
+
+    </div>
+    <div class="col auto">
+    </div>
+</div>
